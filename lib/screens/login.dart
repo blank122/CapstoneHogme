@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hogme_flutter_application/utils/colors/app_theme.dart';
 import 'package:hogme_flutter_application/utils/widgets/button_shadow.dart';
 import 'package:hogme_flutter_application/utils/widgets/text_widgets.dart';
+
+import '../backend_connection/API/authentication_controller.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,6 +17,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   late TextEditingController usernamecontroller;
   late TextEditingController passwordcontroller;
+  final AuthenticationController _authenticationController =
+      Get.put(AuthenticationController());
 
   @override
   void initState() {
@@ -130,19 +136,47 @@ class _LoginState extends State<Login> {
               ),
               const Row(),
               //Create account button
-              GestureDetector(
-                onTap: () => {},
-                child: Container(
-                  width: 325,
-                  height: 50,
-                  margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
-                  decoration: buttonShadow(themeColor: Colors.white),
-                  child: Center(
-                    child:
-                        text16Bold(text: "Sign up", defaultColor: Colors.black),
+              // GestureDetector(
+              //   onTap: () => {},
+              //   child: Container(
+              //     width: 325,
+              //     height: 50,
+              //     margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
+              //     decoration: buttonShadow(themeColor: Colors.white),
+              //     child: Center(
+              //       child:
+              //           text16Bold(text: "Sign up", defaultColor: Colors.black),
+              //     ),
+              //   ),
+              // ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  elevation: 0,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 50,
+                    vertical: 15,
                   ),
                 ),
-              )
+                onPressed: () async {
+                  await _authenticationController.login(
+                    email: usernamecontroller.text.trim(),
+                    password: passwordcontroller.text.trim(),
+                  );
+                },
+                child: Obx(() {
+                  return _authenticationController.isLoading.value
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : Text(
+                          'Login',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                          ),
+                        );
+                }),
+              ),
             ],
           ),
         ),
