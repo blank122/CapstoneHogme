@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hogme_flutter_application/utils/colors/app_theme.dart';
 
 BoxDecoration buttonShadow(
-    {Color themeColor = AppTheme.primaryWhite, double radius = 15.0}) {
+    {Color themeColor = AppTheme.primaryWhite, double radius = 0.0}) {
   return BoxDecoration(
       color: themeColor,
       borderRadius: BorderRadius.circular(radius),
@@ -12,6 +12,6 @@ BoxDecoration buttonShadow(
           spreadRadius: 1,
           blurRadius: 2,
           offset: const Offset(-5, 5),
-        )
+        ),
       ]);
 }

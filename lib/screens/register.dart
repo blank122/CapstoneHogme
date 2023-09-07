@@ -1,10 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../backend_connection/API/authentication_controller.dart';
 import '../utils/colors/app_theme.dart';
-import '../utils/widgets/button_shadow.dart';
 import '../utils/widgets/text_widgets.dart';
 
 class Register extends StatefulWidget {
@@ -17,20 +17,41 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   late TextEditingController usernamecontroller;
   late TextEditingController passwordcontroller;
+  late TextEditingController firstnamecontroller;
+  late TextEditingController lastnamecontroller;
+  late TextEditingController contactnumbercontroller;
+  File? validIdImage;
+  File? facilityImage;
+
+  List<XFile>? facilityImagesPath = [];
+
   final AuthenticationController _authenticationController =
       Get.put(AuthenticationController());
+
+  Future<void> _getImage(ImageSource source, Function(File) setImage) async {
+    final image = await ImagePicker().pickImage(source: source);
+    if (image == null) return;
+    setImage(File(image.path));
+  }
 
   @override
   void initState() {
     super.initState();
     usernamecontroller = TextEditingController();
     passwordcontroller = TextEditingController();
+    firstnamecontroller = TextEditingController();
+    lastnamecontroller = TextEditingController();
+    contactnumbercontroller = TextEditingController();
   }
 
   @override
   void dispose() {
     usernamecontroller.dispose();
     passwordcontroller.dispose();
+    firstnamecontroller.dispose();
+    lastnamecontroller.dispose();
+    contactnumbercontroller.dispose();
+
     super.dispose();
   }
 
@@ -55,15 +76,85 @@ class _RegisterState extends State<Register> {
                       width: 100,
                     ),
                   ),
-                  text50BoldHeading(text: 'HOGME'),
+                  text50BoldHeading(text: 'Sign up'),
                 ],
               ),
 
-              //slogan - nurturing livestocks with innovation
               Padding(
-                padding: const EdgeInsets.only(top: 10.00, bottom: 20.00),
-                child: text16Bold(text: "Nurturing livestocks with innovation"),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15),
+                child: TextFormField(
+                  controller: firstnamecontroller,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.people,
+                      color: Colors.black,
+                    ),
+                    labelText: "First Name",
+                    labelStyle: const TextStyle(color: Colors.black),
+                    border: InputBorder.none,
+                    filled: true,
+                  ),
+                ),
               ),
+
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15),
+                child: TextFormField(
+                  controller: lastnamecontroller,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.people,
+                      color: Colors.black,
+                    ),
+                    labelText: "Last Name",
+                    labelStyle: const TextStyle(color: Colors.black),
+                    border: InputBorder.none,
+                    filled: true,
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15),
+                child: TextFormField(
+                  controller: contactnumbercontroller,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.people,
+                      color: Colors.black,
+                    ),
+                    labelText: "Contact number",
+                    labelStyle: const TextStyle(color: Colors.black),
+                    border: InputBorder.none,
+                    filled: true,
+                  ),
+                ),
+              ),
+
               //email placeholder with icons
               Padding(
                 padding:
@@ -115,25 +206,31 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
+
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _getImage(ImageSource.gallery, (file) {
+                    setState(() {
+                      validIdImage = file;
+                    });
+                  });
+                },
+                child: const Text('Select Valid ID Image'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _getImage(ImageSource.gallery, (file) {
+                    setState(() {
+                      facilityImage = file;
+                    });
+                  });
+                },
+                child: const Text('Select Facility Image'),
+              ),
               //forgot password = if makaya
-              Container(
-                margin: const EdgeInsets.only(left: 25.00),
-                child: textUnderline(text: "Forgot password?"),
-              ),
-              //login button
-              GestureDetector(
-                onTap: () => {print("tapped")},
-                child: Container(
-                  width: 325,
-                  height: 50,
-                  margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
-                  decoration: buttonShadow(themeColor: AppTheme.primaryButtons),
-                  child: Center(
-                    child:
-                        text16Bold(text: "Log in", defaultColor: Colors.white),
-                  ),
-                ),
-              ),
+
               const Row(),
               //Create account button
               // GestureDetector(
@@ -149,33 +246,33 @@ class _RegisterState extends State<Register> {
               //     ),
               //   ),
               // ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 50,
-                    vertical: 15,
+              SizedBox(
+                width: 325, // <-- match_parent
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryButtons,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 50,
+                      vertical: 15,
+                    ),
                   ),
+                  onPressed: () async {
+                    await _authenticationController.login(
+                      email: usernamecontroller.text.trim(),
+                      password: passwordcontroller.text.trim(),
+                    );
+                  },
+                  child: Obx(() {
+                    return _authenticationController.isLoading.value
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : text16Normal(
+                            text: 'Login', defaultColor: Colors.white);
+                  }),
                 ),
-                onPressed: () async {
-                  await _authenticationController.login(
-                    email: usernamecontroller.text.trim(),
-                    password: passwordcontroller.text.trim(),
-                  );
-                },
-                child: Obx(() {
-                  return _authenticationController.isLoading.value
-                      ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      : Text(
-                          'Login',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                          ),
-                        );
-                }),
               ),
             ],
           ),
