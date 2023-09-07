@@ -3,23 +3,26 @@ class User {
   int? id;
   String? firstname;
   String? lastname;
-  String? username;
+  String? contactnumber;
+  String? facilitypicture;
+  String? validid;
   String? email;
   String? password;
 
   String? token;
-  String? profilePicture;
 
   //assigned the values
-  User(
-      {this.id,
-      this.firstname,
-      this.lastname,
-      this.username,
-      this.email,
-      this.password,
-      this.token,
-      this.profilePicture});
+  User({
+    this.id,
+    this.firstname,
+    this.lastname,
+    this.contactnumber,
+    this.facilitypicture,
+    this.validid,
+    this.email,
+    this.password,
+    this.token,
+  });
 
   //convert the data format into json format
   factory User.fromJson(Map<String, dynamic> json) {
@@ -27,11 +30,12 @@ class User {
       id: json['user']['id'],
       firstname: json['user']['firstname'],
       lastname: json['user']['lastname'],
-      username: json['user']['username'],
+      contactnumber: json['user']['contactnumber'],
+      facilitypicture: json['user']['facilitypicture'],
+      validid: json['user']['validid'],
       email: json['user']['email'],
       password: json['user']['password'],
       token: json['user']['token'],
-      profilePicture: json['user']['profilePicture'],
     );
   }
 
@@ -39,10 +43,11 @@ class User {
         "id": id,
         "firstname": firstname,
         "lastname": lastname,
-        "username": username,
+        "contactnumber": contactnumber,
+        "facilitypicture": facilitypicture,
+        "validid": validid,
         "email": email,
         "password": password,
         "token": token,
-        "profilePicture": profilePicture,
       };
 }

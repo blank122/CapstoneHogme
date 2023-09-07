@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hogme_flutter_application/utils/colors/app_theme.dart';
-import 'package:hogme_flutter_application/utils/widgets/button_shadow.dart';
 import 'package:hogme_flutter_application/utils/widgets/text_widgets.dart';
 
 import '../backend_connection/API/authentication_controller.dart';
@@ -15,6 +14,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool loading = false;
   late TextEditingController usernamecontroller;
   late TextEditingController passwordcontroller;
   final AuthenticationController _authenticationController =
@@ -121,19 +121,19 @@ class _LoginState extends State<Login> {
                 child: textUnderline(text: "Forgot password?"),
               ),
               //login button
-              GestureDetector(
-                onTap: () => {print("tapped")},
-                child: Container(
-                  width: 325,
-                  height: 50,
-                  margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
-                  decoration: buttonShadow(themeColor: AppTheme.primaryButtons),
-                  child: Center(
-                    child:
-                        text16Bold(text: "Log in", defaultColor: Colors.white),
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () => {print("tapped")},
+              //   child: Container(
+              //     width: 325,
+              //     height: 50,
+              //     margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
+              //     decoration: buttonShadow(themeColor: AppTheme.primaryButtons),
+              //     child: Center(
+              //       child:
+              //           text16Bold(text: "Log in", defaultColor: Colors.white),
+              //     ),
+              //   ),
+              // ),
               const Row(),
               //Create account button
               // GestureDetector(
