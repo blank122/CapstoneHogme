@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:hogme_flutter_application/backend_connection/controller/announcement_controller.dart';
+import 'package:hogme_flutter_application/screens/announcement/announcement.dart';
+import 'package:hogme_flutter_application/screens/announcement/announcementdata.dart';
 import 'package:hogme_flutter_application/utils/widgets/text_widgets.dart';
 
 class Home extends StatefulWidget {
@@ -9,6 +14,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final AnnouncementController _announcementController =
+      Get.put(AnnouncementController());
+  final box = GetStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +43,12 @@ class _HomeState extends State<Home> {
               Icons.notifications,
               color: Color.fromARGB(255, 71, 71, 71),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Announcement()),
+              );
+            },
           ),
           IconButton(
             icon: const Icon(
@@ -55,7 +68,7 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            text36Normal(text: 'Dashboard'),
+            text36Bold(text: 'Dashboard'),
             const SizedBox(height: 16.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +76,10 @@ class _HomeState extends State<Home> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    text24Normal(text: 'Announcement'),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: text24Bold(text: 'Announcement'),
+                    ),
                     Container(
                       width: 24.0,
                       height: 24.0,
@@ -78,15 +94,42 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 const SizedBox(height: 16.0),
-                Container(
-                  width: double.infinity,
-                  height: 90.0,
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                ),
+                Obx(() {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount:
+                        _announcementController.announcementList.value.length,
+                    itemBuilder: (context, index) {
+                      return AnnouncementData(
+                        announcements: _announcementController
+                            .announcementList.value[index],
+                      );
+                    },
+                  );
+                }),
+                // Obx(() {
+                //   return Container(
+                //     width: double.infinity,
+                //     height: 150.0,
+                //     padding: const EdgeInsets.all(16.0),
+                //     decoration: BoxDecoration(
+                //       color: Colors.grey,
+                //       borderRadius: BorderRadius.circular(16.0),
+                //     ),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         text24Bold(
+                //             text:
+                //                 ' ${_announcementController.announcementList[0].title}'),
+                //         text16Normal(
+                //             text:
+                //                 ' ${_announcementController.announcementList[0].content}'),
+                //       ],
+                //     ),
+                //   );
+                // }),
               ],
             ),
             const SizedBox(height: 32.0),

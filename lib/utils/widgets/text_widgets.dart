@@ -29,6 +29,19 @@ Widget text36Normal({required String text, Color defaultColor = Colors.black}) {
   );
 }
 
+Widget text36Bold({required String text, Color defaultColor = Colors.black}) {
+  return Text(
+    text,
+    textAlign: TextAlign.center,
+    style: GoogleFonts.montserrat(
+      fontSize: 36,
+      color: defaultColor,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 1.2,
+    ),
+  );
+}
+
 Widget text24Bold({required String text, Color defaultColor = Colors.black}) {
   return Text(
     text,
