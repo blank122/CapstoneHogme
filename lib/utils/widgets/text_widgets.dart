@@ -16,6 +16,19 @@ Widget text50BoldHeading(
   );
 }
 
+Widget text36Normal({required String text, Color defaultColor = Colors.black}) {
+  return Text(
+    text,
+    textAlign: TextAlign.center,
+    style: GoogleFonts.montserrat(
+      fontSize: 36,
+      color: defaultColor,
+      fontWeight: FontWeight.normal,
+      letterSpacing: 1.2,
+    ),
+  );
+}
+
 Widget text24Bold({required String text, Color defaultColor = Colors.black}) {
   return Text(
     text,
@@ -50,6 +63,19 @@ Widget text16Bold({required String text, Color defaultColor = Colors.black}) {
       fontSize: 16,
       color: defaultColor,
       fontWeight: FontWeight.bold,
+      letterSpacing: 1.2,
+    ),
+  );
+}
+
+Widget text20Normal({required String text, Color defaultColor = Colors.black}) {
+  return Text(
+    text,
+    textAlign: TextAlign.left,
+    style: GoogleFonts.montserrat(
+      fontSize: 20,
+      color: defaultColor,
+      fontWeight: FontWeight.normal,
       letterSpacing: 1.2,
     ),
   );
