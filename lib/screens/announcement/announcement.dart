@@ -6,18 +6,14 @@ import 'package:hogme_flutter_application/screens/announcement/announcementdata.
 import '../../backend_connection/controller/announcement_controller.dart';
 import '../../utils/widgets/text_widgets.dart';
 
-class Announcement extends StatefulWidget {
-  const Announcement({super.key});
+class Announcement extends StatelessWidget {
+  Announcement({super.key});
 
-  @override
-  State<Announcement> createState() => _AnnouncementState();
-}
-
-class _AnnouncementState extends State<Announcement> {
   final AnnouncementController _announcementController =
       Get.put(AnnouncementController());
+
   final isLoading = false.obs;
-  final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,14 +51,17 @@ class _AnnouncementState extends State<Announcement> {
                     )
                   : ListView.builder(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
                       itemCount:
-                          _announcementController.announcementList.value.length,
+                          _announcementController.announcement.value.length,
                       itemBuilder: (context, index) {
                         return AnnouncementData(
-                          announcements: _announcementController
-                              .announcementList.value[index],
-                        );
+                            title: _announcementController
+                                .announcement.value[index].title,
+                            content: _announcementController
+                                .announcement.value[index].content,
+                            createdAt: _announcementController
+                                .announcement.value[index].createdAt
+                                .toIso8601String());
                       },
                     );
             }),

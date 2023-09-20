@@ -1,24 +1,21 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:hogme_flutter_application/backend_connection/API/constant.dart';
 import 'package:hogme_flutter_application/backend_connection/models/announcement_model.dart';
 import 'package:http/http.dart' as http;
 
 class AnnouncementController extends GetxController {
   //variable for annoucement
-  Rx<List<AnnouncementModel>> announcementList =
-      Rx<List<AnnouncementModel>>([]);
-
-  // var announcementList = <AnnouncementModel>[].obs;
+  // Rx<List<AnnouncementModel>> announcement = Rx<List<AnnouncementModel>>([]);
+  var announcement = <AnnouncementModel>[].obs;
   final isLoading = false.obs;
-  final box = GetStorage();
+  // var announcementList = <AnnouncementModel>[].obs;
 
   @override
   void onInit() {
-    super.onInit();
     getAnnouncement();
+    super.onInit();
   }
 
   // Future<void> fetchAnnouncement() async {
@@ -59,25 +56,22 @@ class AnnouncementController extends GetxController {
   // }
 
   //get all the announcements
-  Future getAnnouncement() async {
+  Future<void> getAnnouncement() async {
     try {
       isLoading.value = true;
       //logic to get all the announcement post
-      var response =
-          await http.get(Uri.parse('$baseUrl/announcement'), headers: {
+      var response = await http.get(Uri.parse(announcements), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${box.read('token')}',
       });
       if (response.statusCode == 200) {
         isLoading.value = false;
 
         // ignore: avoid_print
-        print(json.decode(response.body));
         final content = jsonDecode(response.body)['announcement'];
-        for (var item in content) {
-          // ignore: invalid_use_of_protected_member
-          announcementList.value.add(AnnouncementModel.fromJson(item));
-        }
+        print(content);
+
+        announcement.value = 
+        // ignore: avoid_print
       } else {
         isLoading.value = false;
 
